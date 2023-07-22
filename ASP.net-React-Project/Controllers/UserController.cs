@@ -27,7 +27,7 @@ namespace ASP.net_React_Project.Controllers
 
         [HttpGet]
         [Route("login")]
-        public IActionResult GetLogin(User loginData)
+        public IActionResult GetLogin([FromHeader]User loginData)
         {
             User? user = db.Set<User>()
                 .Where(u => u.Name == loginData.Name && u.Password == loginData.Password).FirstOrDefault();
@@ -68,20 +68,21 @@ namespace ASP.net_React_Project.Controllers
 
         [HttpPost]
         [Route("registration")]
-        public IActionResult Post(User userData)
+        public IActionResult Post([FromHeader]User userData)
         {
-            var userCheck = db.Set<User>().Where(u => u.Id == userData.Id).FirstOrDefault();
+            var userCheck = db.Set<User>().Where(u => u.Name == userData.Name).FirstOrDefault();
             if (userData != null)
             {
                 if (userCheck == null)
                 {
-                    db.Users.Add(userData);
+                    User newUser = new User { Name = userData.Name, Password = userData.Password };
+                    db.Users.Add(newUser);
                     db.SaveChanges();
-                    return new JsonResult(userData);
+                    return new JsonResult(newUser);
                 }
                 else
                 {
-                    return BadRequest(new { message = "User already exist" });
+                    return BadRequest(new { message = "User already exists" });
                 }
             }
             else
