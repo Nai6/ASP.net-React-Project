@@ -3,7 +3,7 @@ using System.Text;
 
 
 
-namespace ASP.net_React_Project.Tools.AuthOption
+namespace ASP.net_React_Project.Tools
 {
     public class AuthOption
     {

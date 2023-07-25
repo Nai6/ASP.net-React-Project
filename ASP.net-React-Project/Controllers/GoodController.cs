@@ -44,7 +44,7 @@ namespace ASP.net_React_Project.Controllers
             return new JsonResult(newGood);
 
         }
-        [HttpPost]
+        [HttpPut]
         [Route("update")]
         public IActionResult UpdateGood([FromHeader]Good good)
         {
@@ -52,11 +52,19 @@ namespace ASP.net_React_Project.Controllers
             db.SaveChanges();
             return new JsonResult(good);
         }
-        [HttpDelete]
-        [Route("remove")]
-        public IActionResult RemoveGood([FromHeader] Good good)
-        {
 
+        [HttpDelete]
+        [Route("remove/{id}")]
+        public IActionResult RemoveGood(int id)
+        {
+            var goodToBeRevomed = db.Set<Good>().Where(g => g.Id == id).FirstOrDefault();
+            if (goodToBeRevomed is null) return BadRequest(new { message = "Wrong good's ID" });
+            else
+            {
+                db.Set<Good>().Remove(goodToBeRevomed);
+                db.SaveChanges();
+                return new JsonResult($"Item {goodToBeRevomed.Name} was removed");
+            }            
         }
 
     }

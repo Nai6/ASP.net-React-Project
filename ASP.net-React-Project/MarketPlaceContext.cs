@@ -58,7 +58,7 @@ public partial class MarketPlaceContext : DbContext
                 .HasMaxLength(20)
                 .IsFixedLength();
             entity.Property(e => e.Password)
-                .HasMaxLength(30)
+                .HasMaxLength(100)
                 .IsFixedLength();
         });
 

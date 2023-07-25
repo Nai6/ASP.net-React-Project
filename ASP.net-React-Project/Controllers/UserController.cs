@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using ASP.net_React_Project.Tools.AuthOption;
+using ASP.net_React_Project.Tools;
 
 namespace ASP.net_React_Project.Controllers
 {
@@ -29,31 +29,17 @@ namespace ASP.net_React_Project.Controllers
         [Route("login")]
         public IActionResult GetLogin([FromHeader]User loginData)
         {
+            string password = PasswordEncryption.Encrypt(loginData.Password);
             User? user = db.Set<User>()
-                .Where(u => u.Name == loginData.Name && u.Password == loginData.Password).FirstOrDefault();
+                .Where(u => u.Name == loginData.Name && u.Password == password).FirstOrDefault();
             if (user is null) return BadRequest(new { message = "Incorrect user or password" });
 
-            var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Name) };
-            // создаем JWT-токен
-            var jwt = new JwtSecurityToken(
-                    issuer: AuthOption.ISSUER,
-                    audience: AuthOption.AUDIENCE,
-                    claims: claims,
-                    expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
-                    signingCredentials: new SigningCredentials(AuthOption.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-
-            var response = new
-            {
-                access_token = encodedJwt,
-                username = user.Name,
-            };
-
+            var response = TokenGenerator.CreateJWTToken(db, user);
 
             return new JsonResult(response);
         }
         [HttpGet]
-        [Route("user/{id}")]
+        [Route("{id}")]
         [Authorize]
         public IActionResult GetUser(int? id)
         {

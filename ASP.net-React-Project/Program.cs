@@ -1,9 +1,6 @@
 using ASP.net_React_Project;
-using ASP.net_React_Project.Tools.AuthOption;
+using ASP.net_React_Project.Tools;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Routing.Patterns;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 
