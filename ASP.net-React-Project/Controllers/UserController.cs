@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using ASP.net_React_Project.Tools;
+using ASP.net_React_Project.Validators;
 
 namespace ASP.net_React_Project.Controllers
 {
@@ -56,6 +57,9 @@ namespace ASP.net_React_Project.Controllers
         [Route("registration")]
         public IActionResult Post([FromHeader]User userData)
         {
+            Validation<User> validation = new Validation<User>();
+            validation.Validate(userData);
+
             var userCheck = db.Set<User>().Where(u => u.Name == userData.Name).FirstOrDefault();
             if (userData != null)
             {
