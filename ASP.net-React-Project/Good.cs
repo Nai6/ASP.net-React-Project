@@ -1,8 +1,10 @@
-﻿using System;
+﻿using ASP.net_React_Project.Validators.Attributes.UserControllerValidation;
+using System;
 using System.Collections.Generic;
 
 namespace ASP.net_React_Project;
 
+[GoodValidation]
 public partial class Good
 {
     public int Id { get; set; }

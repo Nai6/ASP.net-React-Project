@@ -1,7 +1,8 @@
 ﻿using ASP.net_React_Project.Tools;
-using ASP.net_React_Project.Validators.Attributes;
+using ASP.net_React_Project.Validators.Attributes.UserControllerValidation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ASP.net_React_Project;
 [UserValidation]
@@ -11,13 +12,12 @@ public partial class User
 
     public string Name { get; set; } = null!;
 
-    private string password;
-
+    private string password = null!;
     public string Password
     {
         get
         {
-            return password;
+            return PasswordEncryption.Decrypt(password);
         }
         set
         {

@@ -14,9 +14,13 @@ namespace ASP.net_React_Project.Tools
 
         public static string Decrypt(string encryptedPassword)
         {
-            var base64EncodeBytes = Convert.FromBase64String(encryptedPassword);
-            var decryptedString = Encoding.UTF8.GetString(base64EncodeBytes);
-            return decryptedString.Substring(0, decryptedString.Length - KEY.Length);
+            if (encryptedPassword != null)
+            {
+                var base64EncodeBytes = Convert.FromBase64String(encryptedPassword);
+                var decryptedString = Encoding.UTF8.GetString(base64EncodeBytes);
+                return decryptedString.Substring(0, decryptedString.Length - KEY.Length);
+            }
+            return null;
         }
     }
 }

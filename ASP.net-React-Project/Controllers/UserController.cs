@@ -5,6 +5,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using ASP.net_React_Project.Tools;
 using ASP.net_React_Project.Validators;
+using ASP.net_React_Project.Validators.Attributes.UserControllerValidation;
 
 namespace ASP.net_React_Project.Controllers
 {
@@ -12,7 +13,8 @@ namespace ASP.net_React_Project.Controllers
     [Route("api/user")]
     public class UserController : Controller
     {
-        readonly MarketPlaceContext db = new MarketPlaceContext();
+        readonly MarketPlaceContext db = new();
+        private Validation<User> validation = new();
 
         public UserController(MarketPlaceContext context)
         {
@@ -27,13 +29,14 @@ namespace ASP.net_React_Project.Controllers
         }
 
         [HttpGet]
+        [LoginValidation]
         [Route("login")]
-        public IActionResult GetLogin([FromHeader]User loginData)
+        public IActionResult GetLogin([FromHeader] User loginData)
         {
-            string password = PasswordEncryption.Encrypt(loginData.Password);
+            validation.Validate(loginData);
+
             User? user = db.Set<User>()
-                .Where(u => u.Name == loginData.Name && u.Password == password).FirstOrDefault();
-            if (user is null) return BadRequest(new { message = "Incorrect user or password" });
+                .Where(u => u.Name == loginData.Name && u.Password == loginData.Password).FirstOrDefault();
 
             var response = TokenGenerator.CreateJWTToken(db, user);
 
@@ -41,27 +44,22 @@ namespace ASP.net_React_Project.Controllers
         }
         [HttpGet]
         [Route("{id}")]
-        [Authorize]
-        public IActionResult GetUser(int? id)
+        [UserByIdValidation]
+        public IActionResult GetUserById(int id)
         {
-            if (id == null) return BadRequest();
             var userData = db.Set<User>().Where(u => u.Id == id).FirstOrDefault();
-            if (userData != null)
-            {
-                return new JsonResult(userData);
-            }
-            else { return BadRequest(); }
+            if (userData != null) return new JsonResult(userData);
+            else return BadRequest(new { message = $"User with ID {id} does not exist" });
         }
 
         [HttpPost]
         [Route("registration")]
-        public IActionResult Post([FromHeader]User userData)
+        [RegistrationValidation]
+        public IActionResult Post([FromHeader] User userData)
         {
-            Validation<User> validation = new Validation<User>();
             validation.Validate(userData);
 
             var userCheck = db.Set<User>().Where(u => u.Name == userData.Name).FirstOrDefault();
-            if (userData != null)
             {
                 if (userCheck == null)
                 {
@@ -75,11 +73,6 @@ namespace ASP.net_React_Project.Controllers
                     return BadRequest(new { message = "User already exists" });
                 }
             }
-            else
-            {
-                return BadRequest(new { message = "Wrong user data" });
-            }
-
         }
     }
 }
