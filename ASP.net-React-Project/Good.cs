@@ -1,4 +1,4 @@
-﻿using ASP.net_React_Project.Validators.Attributes.UserControllerValidation;
+﻿using ASP.net_React_Project.Validators.Attributes.GoodControllerValidation;
 using System;
 using System.Collections.Generic;
 
@@ -9,9 +9,9 @@ public partial class Good
 {
     public int Id { get; set; }
 
-    public string Name { get; set; } = null!;
+    public string? Name { get; set; } = null!;
 
-    public int Price { get; set; }
+    public int? Price { get; set; }
 
     public byte[]? Img { get; set; }
 

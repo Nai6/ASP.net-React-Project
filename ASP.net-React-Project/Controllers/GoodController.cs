@@ -1,15 +1,18 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ASP.net_React_Project.Validators;
+using ASP.net_React_Project.Validators.Attributes.GoodControllerValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-
+using System.ComponentModel.DataAnnotations;
 
 namespace ASP.net_React_Project.Controllers
 {
-    [Route("api/good")]
     [ApiController]
+    [Route("api/good")]
     public class GoodController : Controller
     {
         MarketPlaceContext db { get; }
+
+        private Validation<Good> validation  = new();
 
         public GoodController(MarketPlaceContext context)
         {
@@ -35,9 +38,12 @@ namespace ASP.net_React_Project.Controllers
         }
 
         [HttpPost]
+        [AddingGoodValidation]
         [Route("add")]
         public IActionResult AddGood([FromHeader] Good good)
         {
+            validation.Validate(good);
+
             Good newGood = new Good { Name = good.Name, Price = good.Price, Img = good.Img };
             db.Goods.Add(newGood);
             db.SaveChanges();
@@ -54,18 +60,17 @@ namespace ASP.net_React_Project.Controllers
         }
 
         [HttpDelete]
+        [RemoveGoodValidation]
         [Route("remove/{id}")]
         public IActionResult RemoveGood(int id)
         {
             var goodToBeRevomed = db.Set<Good>().Where(g => g.Id == id).FirstOrDefault();
-            if (goodToBeRevomed is null) return BadRequest(new { message = "Wrong good's ID" });
-            else
-            {
+            validation.Validate(goodToBeRevomed);
+
                 db.Set<Good>().Remove(goodToBeRevomed);
                 db.SaveChanges();
                 return new JsonResult($"Item {goodToBeRevomed.Name} was removed");
-            }            
+          
         }
-
     }
 }
