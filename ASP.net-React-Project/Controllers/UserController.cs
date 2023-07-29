@@ -63,7 +63,7 @@ namespace ASP.net_React_Project.Controllers
             {
                 if (userCheck == null)
                 {
-                    User newUser = new User { Name = userData.Name, Password = userData.Password };
+                    User newUser = new () { Name = userData.Name, Password = userData.Password };
                     db.Users.Add(newUser);
                     db.SaveChanges();
                     return new JsonResult(newUser);
