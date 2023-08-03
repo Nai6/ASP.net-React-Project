@@ -10,12 +10,12 @@ namespace ASP.net_React_Project.Validators.Attributes.UserControllerValidation
             {
                 if (user.Name is null)
                 {
-                    ErrorMessage = "User must has name";
+                    ErrorMessage = "User must have name";
                     return false;
                 }
                 else if (user.Password is null)
                 {
-                    ErrorMessage = "User must has password";
+                    ErrorMessage = "User must have password";
                     return false;
                 }
                 return true;

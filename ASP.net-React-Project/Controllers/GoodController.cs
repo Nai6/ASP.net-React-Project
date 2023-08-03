@@ -3,6 +3,7 @@ using ASP.net_React_Project.Validators.Attributes.GoodControllerValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Numerics;
 
 namespace ASP.net_React_Project.Controllers
 {
@@ -38,11 +39,15 @@ namespace ASP.net_React_Project.Controllers
         }
 
         [HttpPost]
-        [AddingGoodValidation]
         [Route("add")]
         public IActionResult AddGood([FromHeader] Good good)
         {
-            validation.Validate(good);
+            var test = validation.Validate(good, new AddingGoodValidationAttribute());
+            if (!test.IsValid)
+            {
+                string error = string.Join(Environment.NewLine, test.ListOfErrors);
+                return BadRequest(new { message = $"{error}" });
+            }
 
             Good newGood = new Good { Name = good.Name, Price = good.Price, Img = good.Img };
             db.Goods.Add(newGood);
@@ -65,12 +70,14 @@ namespace ASP.net_React_Project.Controllers
         public IActionResult RemoveGood(int id)
         {
             var goodToBeRevomed = db.Set<Good>().Where(g => g.Id == id).FirstOrDefault();
-            validation.Validate(goodToBeRevomed);
-
+            if (goodToBeRevomed is null) return BadRequest(new { message = "Wrong good's ID" });
+            else
+            {
                 db.Set<Good>().Remove(goodToBeRevomed);
                 db.SaveChanges();
                 return new JsonResult($"Item {goodToBeRevomed.Name} was removed");
-          
+            }            
         }
+
     }
 }

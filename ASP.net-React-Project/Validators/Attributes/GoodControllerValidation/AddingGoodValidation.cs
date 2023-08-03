@@ -10,7 +10,7 @@ namespace ASP.net_React_Project.Validators.Attributes.GoodControllerValidation
             {
                 if (good.Name is null)
                 {
-                    ErrorMessage = "Incorect data. Good must contain Name and Price.";
+                    ErrorMessage = "Incorect data. Good must contain Name.";
                     return false;
                 }
                 return true;

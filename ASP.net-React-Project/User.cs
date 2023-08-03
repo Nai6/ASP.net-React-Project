@@ -13,6 +13,7 @@ public partial class User
     public string Name { get; set; } = null!;
 
     private string password = null!;
+
     public string Password
     {
         get
