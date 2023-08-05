@@ -11,57 +11,44 @@ namespace ASP.net_React_Project.Controllers
     [Route("api/cart")]
     public class CartController : Controller
     {
-        MarketPlaceContext db { get; }
-
+        private MarketPlace MapCart = new();
         public CartController(MarketPlaceContext context)
         {
-            db = context;
+            MapCart = new(context);
         }
 
         [HttpGet]
         public IActionResult GetCart()
         {
-            return Json(db.Set<Cart>().FirstOrDefault());
+            return MapCart.GetCartAll();
         }
 
         [HttpGet]
         [Route("items")]
-        public IActionResult GetItems([FromHeader] string authorization)
+        public IActionResult items([FromHeader] string authorization)
         {
-            var userId = TokenInfoGetter.GetUserID(authorization);
-            List<Cart> cartItems = db.Set<Cart>().Where(u => u.UserId == userId).ToList();
-            return new JsonResult(cartItems);
+            return MapCart.GetCartItem(authorization);
         }
 
         [HttpPost]
         [Route("add")]
-        public IActionResult AddToCart([FromHeader] string authorization, Good good)
+        public IActionResult add([FromHeader] string authorization, Good good)
         {
-            var userId = TokenInfoGetter.GetUserID(authorization);
-            Cart cartItem = new() { UserId = userId, GoodsId = good.Id };
-            db.Carts.Add(cartItem);
-            db.SaveChanges();
-            return new JsonResult(cartItem);
+            return MapCart.PostCartAdd(authorization, good);
         }
 
         [HttpDelete]
         [Route("remove/{id}")]
-        public IActionResult RemoveItemFromCart(int id, [FromHeader] string authorization) 
+        public IActionResult removeId(int id, [FromHeader] string authorization)
         {
-            var userId = TokenInfoGetter.GetUserID(authorization);
-            Cart itemToBeRemove = db.Set<Cart>().Where(c => c.UserId == userId && c.GoodsId == id).FirstOrDefault();
-            db.Carts.Remove(itemToBeRemove);
-            db.SaveChanges();
-            return new JsonResult(itemToBeRemove);
+            return MapCart.DeleteCartItem(id, authorization);
         }
 
         [HttpPut]
         [Route("update/{id}")]
         public IActionResult UpdateCart(Cart cart)
         {
-            db.Carts.Update(cart);
-            db.SaveChanges();
-            return new JsonResult(cart);
+            return MapCart.PutCart(cart);
         }
     }
 }

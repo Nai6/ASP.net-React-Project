@@ -13,69 +13,40 @@ namespace ASP.net_React_Project.Controllers
     [Route("api/user")]
     public class UserController : Controller
     {
-        readonly MarketPlaceContext db = new();
-        private Validation<User> validation = new();
+        private MarketPlace MapUsers = new();
 
         public UserController(MarketPlaceContext context)
         {
-            db = context;
+            MapUsers = new (context);
         }
 
         [HttpGet]
         [Route("get")]
-        public IActionResult Get()
+        public IActionResult get()
         {
-            return Json(db.Set<User>());
+            return MapUsers.GetUserAll();
         }
 
         [HttpGet]
         [Route("login")]
-        public IActionResult GetLogin([FromHeader] User loginData)
+        public IActionResult login([FromHeader] User loginData)
         {
-            validation.Validate(loginData, new LoginValidationAttribute());
-
-            var userPassword = PasswordEncryption.Encrypt(loginData.Password);
-            User? user = db.Set<User>()
-                .Where(u => u.Name == loginData.Name && u.Password == userPassword)
-                .FirstOrDefault();
-
-            var response = TokenGenerator.CreateJWTToken(db, user);
-
-            return new JsonResult(response);
+            return MapUsers.GetUserLogin(loginData);
         }
+
         [HttpGet]
         [Route("{id}")]
-        [UserByIdValidation]
         public IActionResult GetUserById(int id)
         {
-            Validation<int> GetUserByIdValidation = new Validation<int>();
-/*            GetUserByIdValidation.Validate((int) id);
-*/            var userData = db.Set<User>().Where(u => u.Id == id).FirstOrDefault();
-            if (userData != null) return new JsonResult(userData);
-            else return BadRequest(new { message = $"User with ID {id} does not exist" });
+            return MapUsers.GetUserById(id);
         }
 
         [HttpPost]
         [Route("registration")]
-        [RegistrationValidation]
-        public IActionResult Post([FromHeader] User userData)
+        public IActionResult registration([FromHeader] User userData)
         {
-            validation.Validate(userData, new RegistrationValidationAttribute());
+            return MapUsers.PostUserRegistration(userData);
 
-            var userCheck = db.Set<User>().Where(u => u.Name == userData.Name).FirstOrDefault();
-            {
-                if (userCheck == null)
-                {
-                    User newUser = new() { Name = userData.Name, Password = userData.Password };
-                    db.Users.Add(newUser);
-                    db.SaveChanges();
-                    return new JsonResult(newUser);
-                }
-                else
-                {
-                    return BadRequest(new { message = "User already exists" });
-                }
-            }
         }
     }
 }

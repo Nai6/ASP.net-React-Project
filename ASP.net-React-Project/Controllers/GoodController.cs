@@ -12,71 +12,48 @@ namespace ASP.net_React_Project.Controllers
     public class GoodController : Controller
     {
         MarketPlaceContext db { get; }
+        MarketPlace MapGood = new();
 
         private Validation<Good> validation  = new();
 
         public GoodController(MarketPlaceContext context)
         {
-            db = context;
+            MapGood = new(context);
         }
 
         [HttpGet]
         [Route("get")]
         public IActionResult Get()
         {
-            return new JsonResult(db.Set<Good>());
+            return MapGood.GetGoodAll();
         }
 
         [HttpGet]
         [Route("{id}")]
         public IActionResult GetGoodById(int id)
         {
-            Good? good = db.Set<Good>().Where(g => g.Id == id).FirstOrDefault();
-
-            if (good is null) return BadRequest(new { message = "Good you are looking for doesn't exist" });
-
-            return new JsonResult(good);
+            return MapGood.GetGoodById(id);
         }
 
         [HttpPost]
         [Route("add")]
-        public IActionResult AddGood([FromHeader] Good good)
+        public IActionResult Add([FromHeader] Good good)
         {
-            var test = validation.Validate(good, new AddingGoodValidationAttribute());
-            if (!test.IsValid)
-            {
-                string error = string.Join(Environment.NewLine, test.ListOfErrors);
-                return BadRequest(new { message = $"{error}" });
-            }
-
-            Good newGood = new Good { Name = good.Name, Price = good.Price, Img = good.Img };
-            db.Goods.Add(newGood);
-            db.SaveChanges();
-            return new JsonResult(newGood);
-
+            return MapGood.PostGood(good);
         }
+
         [HttpPut]
         [Route("update")]
-        public IActionResult UpdateGood([FromHeader]Good good)
+        public IActionResult update([FromHeader]Good good)
         {
-            db.Goods.Update(good);
-            db.SaveChanges();
-            return new JsonResult(good);
+            return MapGood.PutGood(good);
         }
 
         [HttpDelete]
-        [RemoveGoodValidation]
         [Route("remove/{id}")]
-        public IActionResult RemoveGood(int id)
+        public IActionResult removeById(int id)
         {
-            var goodToBeRevomed = db.Set<Good>().Where(g => g.Id == id).FirstOrDefault();
-            if (goodToBeRevomed is null) return BadRequest(new { message = "Wrong good's ID" });
-            else
-            {
-                db.Set<Good>().Remove(goodToBeRevomed);
-                db.SaveChanges();
-                return new JsonResult($"Item {goodToBeRevomed.Name} was removed");
-            }            
+            return MapGood.DeleteGood(id);       
         }
 
     }
