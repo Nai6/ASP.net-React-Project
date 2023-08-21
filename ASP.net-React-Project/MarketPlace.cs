@@ -3,8 +3,6 @@ using ASP.net_React_Project.Validators;
 using ASP.net_React_Project.Validators.Attributes.GoodControllerValidation;
 using ASP.net_React_Project.Validators.Attributes.UserControllerValidation;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
 
 namespace ASP.net_React_Project
 {
@@ -132,10 +130,18 @@ namespace ASP.net_React_Project
         public IActionResult PostCartAdd(string authorization, Good good)
         {
             var userId = TokenInfoGetter.GetUserID(authorization);
-            Cart cartItem = new() { UserId = userId, GoodsId = good.Id };
-            db.Carts.Add(cartItem);
-            db.SaveChanges();
-            return new JsonResult(cartItem);
+            Good goodCheck = db.Set<Good>()
+                .Where(g => g.Name == good.Name && g.Price == good.Price && g.Id == good.Id)
+                .FirstOrDefault();
+
+            if (goodCheck != null)
+            {
+                Cart cartItem = new() { UserId = userId, GoodsId = good.Id };
+                db.Carts.Add(cartItem);
+                db.SaveChanges();
+                return new JsonResult(cartItem);
+            }
+            else return new BadRequestObjectResult(new { message = "Wrong good's ID" });
         }
 
         public IActionResult DeleteCartItem(int id, string authorization)
@@ -144,6 +150,7 @@ namespace ASP.net_React_Project
             Cart itemToBeRemove = db.Set<Cart>()
                 .Where(c => c.UserId == userId && c.GoodsId == id)
                 .FirstOrDefault();
+
             db.Carts.Remove(itemToBeRemove);
             db.SaveChanges();
             return new JsonResult(itemToBeRemove);

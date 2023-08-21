@@ -1,22 +1,31 @@
 import React, { Component } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import AppRoutes from './AppRoutes';
-import { Layout } from './components/Layout';
 import './custom.css';
+import NavBar from './components/Nav/NavBar';
+import Header from './components/Header/Header';
+import HomePage from './components/HomePage/HomePage';
+import style from './App.module.css'
+import LoginPage from './components/LoginPage/LoginPage'
+import MarketPlace from './components/MarketPlace/MarketPlace';
 
 export default class App extends Component {
   static displayName = App.name;
 
   render() {
     return (
-      <Layout>
-        <Routes>
-          {AppRoutes.map((route, index) => {
-            const { element, ...rest } = route;
-            return <Route key={index} {...rest} element={element} />;
-          })}
-        </Routes>
-      </Layout>
+      <div>
+        < Header />
+        <div className={style.container}>
+          < NavBar />
+          <div className={style.main_content}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path='/login' element={<LoginPage />} />
+              <Route path='/market' element={<MarketPlace />} />
+            </Routes>
+          </div>
+        </div>
+      </div>
     );
   }
 }

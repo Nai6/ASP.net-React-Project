@@ -10,6 +10,7 @@ var services = builder.Services;
 
 services.AddDbContext<MarketPlaceContext>();
 services.AddControllers();
+services.AddCors();
 
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -36,6 +37,7 @@ services.AddAuthorization();
 
 var app = builder.Build();
 
+app.UseCors(builder => builder.AllowAnyOrigin());
 if (!app.Environment.IsDevelopment())
 {
     app.UseHsts();

@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ASP.net_React_Project;
-using ASP.net_React_Project.Tools;
-using System.Net;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace ASP.net_React_Project.Controllers
 {
@@ -32,21 +27,21 @@ namespace ASP.net_React_Project.Controllers
 
         [HttpPost]
         [Route("add")]
-        public IActionResult add([FromHeader] string authorization, Good good)
+        public IActionResult add([FromHeader] string authorization, [FromHeader]Good good)
         {
             return MapCart.PostCartAdd(authorization, good);
         }
 
         [HttpDelete]
         [Route("remove/{id}")]
-        public IActionResult removeId(int id, [FromHeader] string authorization)
+        public IActionResult removeId([FromHeader]int id, [FromHeader] string authorization)
         {
             return MapCart.DeleteCartItem(id, authorization);
         }
 
         [HttpPut]
         [Route("update/{id}")]
-        public IActionResult UpdateCart(Cart cart)
+        public IActionResult UpdateCart([FromHeader] Cart cart)
         {
             return MapCart.PutCart(cart);
         }
