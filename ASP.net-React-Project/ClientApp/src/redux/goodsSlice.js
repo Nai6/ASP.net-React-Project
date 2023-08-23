@@ -42,7 +42,7 @@ export const removeGood = createAsyncThunk(
 )
 
 const initialState = {
-    goods: [],
+    goods: null,
     good: {
         id: null,
         name: null,
@@ -68,19 +68,19 @@ const goodsSlice = createSlice({
     extraReducers: (builder) => {
             builder
             .addCase(getAllGoods.fulfilled, (state, actions) => {
-                state.goods.push(actions.payload)
+                state.goods = actions.payload
             })
             .addCase(getGoodById.fulfilled, (state, actions) => {
-                state.goodsById.push(actions.payload)
+                state.goodsById = actions.payload
             })
             .addCase(postGood.fulfilled, (state, action) => {
-                state.operationStatus.push(action.payload)
+                state.operationStatus = action.payload
             })
             .addCase(updateGood.fulfilled, (state, action) => {
-                state.operationStatus.push(action.payload)
+                state.operationStatus = action.payload
             })
             .addCase(removeGood.fulfilled, (state, action) =>{
-                state.operationStatus.push(action.payload)
+                state.operationStatus = action.payload
             })
     }
 })

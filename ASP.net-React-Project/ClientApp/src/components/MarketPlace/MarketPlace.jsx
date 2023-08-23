@@ -1,17 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { getAllGoods } from "../../redux/goodsSlice";
+import GoodComponent from "./GoodComponent";
 
 const MarketPlace = (props) =>{
+    debugger
     const dispatch = useDispatch()
-    const [goods, setGoods] = useState(props.goods)
-    useEffect = (() =>{
-        if(props.goods === null){
-            const updatedGoods = dispatch(getAllGoods())
-            setGoods(updatedGoods)
+    useEffect(() =>{
+        dispatch(getAllGoods())
+    }, [dispatch])
+    const goodsData = useSelector((state) => state.good.goods);
+
+    if (!goodsData) return <div>Loading...</div>
+    return <div>
+        {
+            goodsData.map(g => <GoodComponent key={g.id}
+                good={g}
+            />)
         }
-    }, [props.goods])
-    return <div>MarketPlace</div>
+        </div>
 }
 
 export default MarketPlace;
