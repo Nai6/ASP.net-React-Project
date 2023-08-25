@@ -17,7 +17,7 @@ namespace ASP.net_React_Project.Controllers
 
         public UserController(MarketPlaceContext context)
         {
-            MapUsers = new (context);
+            MapUsers = new(context);
         }
 
         [HttpGet]
@@ -39,6 +39,13 @@ namespace ASP.net_React_Project.Controllers
         public IActionResult GetUserById(int id)
         {
             return MapUsers.GetUserById(id);
+        }
+
+        [HttpGet]
+        [Route("jwt")]
+        public IActionResult GetUserByJWT([FromHeader] string authorization)
+        {
+            return MapUsers.GetUserByJWT(authorization);
         }
 
         [HttpPost]

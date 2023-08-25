@@ -1,7 +1,6 @@
 import React from "react";
 
 const GoodComponent = ({good}) =>{
-    debugger
     return <div>
         <ul>
             <li>{good.id}</li>

@@ -4,7 +4,6 @@ import { authAPI } from '../api/api'
 export const login = createAsyncThunk(
     'auth/login',
     async (data) => {
-        debugger
         const respond = await authAPI.login(data)
         return respond.data
     }
@@ -18,18 +17,23 @@ export const registration = createAsyncThunk(
     }
 )
 
+export const userID = createAsyncThunk(
+    'auth/userID',
+    async (jwtToken) => {
+        const respond = await authAPI.getUserByJWT(jwtToken);
+        return respond.data
+    }
+)
+
 const initialState = {
-    userData:{
-        userId: null,
-        userName: null,
-        userPassword: null
-    },
+    userData: null,
     userName: null,
     jwtToken: "",
     isLogined: false,
     error: null,
     registrationStatus: 'registrated',
-    loginingStatus:'idle'
+    loginingStatus: 'idle',
+    isFetching: true
 }
 
 const authSlice = createSlice({
@@ -40,13 +44,17 @@ const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase (login.fulfilled, (state, action) => {
+            .addCase(login.fulfilled, (state, action) => {
                 state.jwtToken += action.payload
                 state.isLogined = true
+            })
+            .addCase(userID.fulfilled, (state, action) => {
+                state.userData = action.payload
+                state.isFetching = false
             })
     }
 })
 
-export const {} = authSlice.actions;
+export const { } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -37,7 +37,7 @@ services.AddAuthorization();
 
 var app = builder.Build();
 
-app.UseCors(builder => builder.AllowAnyOrigin());
+app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader());
 if (!app.Environment.IsDevelopment())
 {
     app.UseHsts();

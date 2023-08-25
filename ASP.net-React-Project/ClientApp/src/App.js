@@ -7,6 +7,7 @@ import HomePage from './components/HomePage/HomePage';
 import style from './App.module.css'
 import LoginPage from './components/LoginPage/LoginPage'
 import MarketPlace from './components/MarketPlace/MarketPlace';
+import UserPage from './components/UserPage/UserPage';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -22,6 +23,7 @@ export default class App extends Component {
               <Route path="/" element={<HomePage />} />
               <Route path='/login' element={<LoginPage />} />
               <Route path='/market' element={<MarketPlace />} />
+              <Route path='/userpage' element={<UserPage />} />
             </Routes>
           </div>
         </div>

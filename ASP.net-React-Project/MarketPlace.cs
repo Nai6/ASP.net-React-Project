@@ -46,6 +46,13 @@ namespace ASP.net_React_Project
             else return new BadRequestObjectResult(new { message = $"User with ID {id} does not exist" });
         }
 
+        public IActionResult GetUserByJWT(string authorization)
+        {
+            var userId = TokenInfoGetter.GetUserID(authorization);
+            var userData = db.Set<User>().Where(u => u.Id == userId).Select(u => new { u.Id, u.Name, u.Carts }).FirstOrDefault();
+            return new JsonResult(userData);
+        }
+
         public IActionResult PostUserRegistration(User userData)
         {
             UserValidation.Validate(userData, new RegistrationValidationAttribute());

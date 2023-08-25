@@ -4,7 +4,6 @@ import { getAllGoods } from "../../redux/goodsSlice";
 import GoodComponent from "./GoodComponent";
 
 const MarketPlace = (props) =>{
-    debugger
     const dispatch = useDispatch()
     useEffect(() =>{
         dispatch(getAllGoods())

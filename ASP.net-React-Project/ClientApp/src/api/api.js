@@ -6,11 +6,13 @@ const instance = axios.create({
 
 export const authAPI = {
     login(data) {
-        debugger
         return instance.get(`user/login?Name=${data.userName}&password=${data.password}`)
     },
     registration(userData) {
         return instance.post(`registration?Name=${userData.userName}&Password=${userData.userPassword}`)
+    },
+    getUserByJWT(data) {
+        return instance.get('user/jwt', {headers: {'authorization':data}})
     }
 }
 
@@ -24,57 +26,42 @@ export const userAPI = {
     }
 }
 
-export const goodsAPI ={
-    getAllGoods(){
+export const goodsAPI = {
+    getAllGoods() {
         return instance.get('good/get')
     },
 
-    getGoodsById(id){
+    getGoodsById(id) {
         return instance.get(`good/${id}`)
     },
 
-    postGood(good){
+    postGood(good) {
         return instance.post(`good/add?Name=${good.Name}&Price=${good.Price}&Img=${good.Img}`)
     },
 
-    putGood(good){
+    putGood(good) {
         return instance.put(`good/update?Name=${good.Name}&Price=${good.Price}&Img=${good.Img}`)
     },
 
-    removeGood(id){
+    removeGood(id) {
         return instance.delete(`good/remove/${id}`)
     }
 }
 
 export const cartAPI = {
-    getAllCarts(){
+    getAllCarts() {
         return instance.get('cart')
     },
 
-    getCartItem(data){
-        const config ={
-            headers:{
-                Authorization: data.JWTtoken
-            }
-        }
-        return instance.get('cart/items', config)
+    getCartItem(data) {
+        return instance.get('cart/items', {headers: {'authorization':data}})
     },
 
-    postCart(data){
-        const config ={
-            headers:{
-                Authorization: data.JWTtoken
-            },
-        }
-        return instance.post(`cart/add?UserId=${data.UserId}&GoodId=${data.GoodId}`, config)
+    postCart(data) {
+        return instance.post(`cart/add?UserId=${data.UserId}&GoodId=${data.GoodId}`, {headers: {'authorization':data}})
     },
 
-    deleteItemFromCart(data){
-        const config ={
-            headers:{
-                Authorization: data.JWTtoken
-            },
-        }
-        return instance.delete(`remove/${data.id}`, config)
+    deleteItemFromCart(data) {
+        return instance.delete(`remove/${data.id}`, {headers: {'authorization':data}})
     }
 }
