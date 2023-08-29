@@ -12,6 +12,7 @@ export const login = createAsyncThunk(
 export const registration = createAsyncThunk(
     'auth/registration',
     async (data) => {
+        debugger
         const respond = await authAPI.registration(data);
         return respond.data;
     }
@@ -47,6 +48,9 @@ const authSlice = createSlice({
             .addCase(login.fulfilled, (state, action) => {
                 state.jwtToken += action.payload
                 state.isLogined = true
+            })
+            .addCase(userID.pending, (state, action) =>{
+                state.isFetching = true
             })
             .addCase(userID.fulfilled, (state, action) => {
                 state.userData = action.payload

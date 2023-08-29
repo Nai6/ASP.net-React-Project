@@ -2,6 +2,7 @@ import React from "react";
 import style from './Header.module.css'
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
+import CartPage from "../CartPage/CartPage";
 
 const Header = (props) => {
     const isLogined = useSelector((state) => state.auth.isLogined)
@@ -9,7 +10,7 @@ const Header = (props) => {
         <div>
             <div className={style.container}>Header</div>
             {isLogined ?
-                <div><NavLink to='/userpage'>User Page</NavLink></div>
+                <div><NavLink to='/userpage'>User Page</NavLink> <CartPage /></div>
                 : null}
 
         </div>)

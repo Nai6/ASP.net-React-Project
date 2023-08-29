@@ -36,7 +36,7 @@ public partial class MarketPlaceContext : DbContext
                 .HasForeignKey(d => d.GoodsId)
                 .HasConstraintName("FK__Cart__GoodsId__440B1D61");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Carts)
+            entity.HasOne(d => d.User).WithMany(p => p.Cart)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK__Cart__UserId__4316F928");
         });

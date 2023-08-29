@@ -10,14 +10,14 @@ const UserPage = () => {
     useEffect(() => {
         dispatch(userID(JWTToken))
     }, [dispatch, JWTToken])
-    debugger
-
+    
     if(isFetching === true) return <div>Loading...</div>
+    debugger
     return <div>
         <ul>
             <li>{userData.id}</li>
             <li>{userData.name}</li>
-            <li>{userData.carts}</li>
+            {/* <li>{userData.carts}</li> */}
         </ul>
     </div>
 }

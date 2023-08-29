@@ -35,9 +35,10 @@ export const removeCartFromItem = createAsyncThunk(
 
 
 const initialState = {
-    userCart: [],
+    userCart: null,
     allCarts: [],
-    status: null
+    status: null,
+    isFetching: true,
 }
 
 const cartSlice = createSlice({
@@ -51,8 +52,12 @@ const cartSlice = createSlice({
             .addCase(getAllCarts.fulfilled, (state, actions) =>{
                 state.allCarts.push(actions.payload)
             })
+            .addCase(getCartItem.pending, (state) =>{
+                state.isFetching = true
+            })
             .addCase(getCartItem.fulfilled, (state, actions) =>{
-                state.userCart.push(actions.payload)
+                state.userCart = actions.payload
+                state.isFetching = false
             })
             .addCase(postCart.fulfilled, (state, actions) => {
                 state.status.push(actions.payload)

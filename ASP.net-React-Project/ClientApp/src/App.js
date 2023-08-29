@@ -8,6 +8,8 @@ import style from './App.module.css'
 import LoginPage from './components/LoginPage/LoginPage'
 import MarketPlace from './components/MarketPlace/MarketPlace';
 import UserPage from './components/UserPage/UserPage';
+import RegistrationPage from './components/RegistrationPage/RegistrationPage';
+import AddNewGoodPage from './components/AddNewGood/AddNewGoodPage';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -24,6 +26,8 @@ export default class App extends Component {
               <Route path='/login' element={<LoginPage />} />
               <Route path='/market' element={<MarketPlace />} />
               <Route path='/userpage' element={<UserPage />} />
+              <Route path='/registration' element={<RegistrationPage />} />
+              <Route path='/addNewGood' element={<AddNewGoodPage />} />
             </Routes>
           </div>
         </div>

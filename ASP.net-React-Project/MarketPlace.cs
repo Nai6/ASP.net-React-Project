@@ -49,7 +49,7 @@ namespace ASP.net_React_Project
         public IActionResult GetUserByJWT(string authorization)
         {
             var userId = TokenInfoGetter.GetUserID(authorization);
-            var userData = db.Set<User>().Where(u => u.Id == userId).Select(u => new { u.Id, u.Name, u.Carts }).FirstOrDefault();
+            var userData = db.Set<User>().Where(u => u.Id == userId).Select(u => new { u.Id, u.Name, u.Cart }).FirstOrDefault();
             return new JsonResult(userData);
         }
 

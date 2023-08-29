@@ -1,17 +1,9 @@
 import { useFormik } from "formik";
 import React from "react";
+import { registration } from "../../redux/authSlice";
 import { useDispatch } from "react-redux";
-import { login } from "../../redux/authSlice";
-import { NavLink } from "react-router-dom";
 
-const LoginPage = (props) => {
-
-    return <div>
-        <LoginForm />
-    </div>
-}
-
-const LoginForm = (props) => {
+const RegistrationPage = () =>{
     const dispatch = useDispatch();
     const formik = useFormik({
         initialValues: {
@@ -19,12 +11,13 @@ const LoginForm = (props) => {
             password: '',
         },
         onSubmit: values => {
-            dispatch(login(values));
+            debugger
+            dispatch(registration(values));
         },
     })
     return (
         <form onSubmit={formik.handleSubmit}>
-            <div>Login Name</div>
+            <div>User Name</div>
             <input
                 id="userName"
                 name="userName"
@@ -43,11 +36,8 @@ const LoginForm = (props) => {
             <div>
                 <button type="submit">Submit</button>
             </div>
-            <div>
-                <NavLink to={'/registration'}><p>Registration</p></NavLink>
-            </div>
         </form>
     )
 }
 
-export default LoginPage
+export default RegistrationPage;

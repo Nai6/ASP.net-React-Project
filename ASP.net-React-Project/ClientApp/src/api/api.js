@@ -8,8 +8,8 @@ export const authAPI = {
     login(data) {
         return instance.get(`user/login?Name=${data.userName}&password=${data.password}`)
     },
-    registration(userData) {
-        return instance.post(`registration?Name=${userData.userName}&Password=${userData.userPassword}`)
+    registration(data) {
+        return instance.post(`user/registration?Name=${data.userName}&Password=${data.password}`)
     },
     getUserByJWT(data) {
         return instance.get('user/jwt', {headers: {'authorization':data}})
@@ -36,7 +36,8 @@ export const goodsAPI = {
     },
 
     postGood(good) {
-        return instance.post(`good/add?Name=${good.Name}&Price=${good.Price}&Img=${good.Img}`)
+        debugger
+        return instance.post(`good/add?Name=${good.Name}&Price=${good.Price}`)
     },
 
     putGood(good) {
