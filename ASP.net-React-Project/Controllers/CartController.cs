@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ASP.net_React_Project.Aggregators;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ASP.net_React_Project.Controllers
 {
@@ -6,7 +7,7 @@ namespace ASP.net_React_Project.Controllers
     [Route("api/cart")]
     public class CartController : Controller
     {
-        private MarketPlace MapCart = new();
+        private CartAggregator MapCart = new();
         public CartController(MarketPlaceContext context)
         {
             MapCart = new(context);
@@ -27,9 +28,9 @@ namespace ASP.net_React_Project.Controllers
 
         [HttpPost]
         [Route("add")]
-        public IActionResult add([FromHeader] string authorization, [FromHeader]Good good)
+        public IActionResult add([FromHeader] string authorization, int goodId)
         {
-            return MapCart.PostCartAdd(authorization, good);
+            return MapCart.PostCartAdd(authorization, goodId);
         }
 
         [HttpDelete]

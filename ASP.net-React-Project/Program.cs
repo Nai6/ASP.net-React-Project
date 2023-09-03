@@ -46,8 +46,8 @@ if (!app.Environment.IsDevelopment())
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseAuthentication();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action}/{id?}");
-app.UseAuthentication();
 app.Run();

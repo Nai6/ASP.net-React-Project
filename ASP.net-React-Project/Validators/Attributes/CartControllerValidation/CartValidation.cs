@@ -8,7 +8,7 @@ namespace ASP.net_React_Project.Validators.Attributes.CartControllerValidation
         {
             if (value is Cart cart)
             {
-                if(cart.UserId is null|| cart.GoodsId is null)
+                if(cart.UserId is null)
                 {
                     ErrorMessage = "Cart must contain User and Good id";
                     return false;

@@ -26,5 +26,14 @@ public partial class User
         }
     }
 
-    public virtual ICollection<Cart> Cart { get; set; } = new List<Cart>();
+    public string? Email { get; set; }
+
+    public string Role { get; set; } = "user";
+
+    public virtual Cart Cart { get; set; } = null!;
+
+    public User()
+    {
+        Cart = new Cart();
+    }
 }

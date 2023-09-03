@@ -29,16 +29,6 @@ public partial class MarketPlaceContext : DbContext
         modelBuilder.Entity<Cart>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Cart__3214EC075EA3DAE7");
-
-            entity.ToTable("Cart");
-
-            entity.HasOne(d => d.Goods).WithMany(p => p.Carts)
-                .HasForeignKey(d => d.GoodsId)
-                .HasConstraintName("FK__Cart__GoodsId__440B1D61");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Cart)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__Cart__UserId__4316F928");
         });
 
         modelBuilder.Entity<Good>(entity =>
@@ -60,6 +50,11 @@ public partial class MarketPlaceContext : DbContext
             entity.Property(e => e.Password)
                 .HasMaxLength(100)
                 .IsFixedLength();
+        });
+
+        modelBuilder.Entity<CartGood>(entity =>
+        {
+            entity.HasKey(e => e.Id);
         });
 
         OnModelCreatingPartial(modelBuilder);

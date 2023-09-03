@@ -12,7 +12,6 @@ export const login = createAsyncThunk(
 export const registration = createAsyncThunk(
     'auth/registration',
     async (data) => {
-        debugger
         const respond = await authAPI.registration(data);
         return respond.data;
     }

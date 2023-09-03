@@ -1,9 +1,6 @@
-﻿using ASP.net_React_Project.Validators;
-using ASP.net_React_Project.Validators.Attributes.GoodControllerValidation;
+﻿using ASP.net_React_Project.Aggregators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
-using System.Numerics;
 
 namespace ASP.net_React_Project.Controllers
 {
@@ -11,10 +8,7 @@ namespace ASP.net_React_Project.Controllers
     [Route("api/good")]
     public class GoodController : Controller
     {
-        MarketPlaceContext db { get; }
-        MarketPlace MapGood = new();
-
-        private Validation<Good> validation  = new();
+        GoodAggregator MapGood = new();
 
         public GoodController(MarketPlaceContext context)
         {

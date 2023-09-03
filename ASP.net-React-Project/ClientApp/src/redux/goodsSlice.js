@@ -20,7 +20,6 @@ export const getGoodById = createAsyncThunk(
 export const postGood = createAsyncThunk(
     'good/postGood',
     async (good) => {
-        debugger
         const respond = await goodsAPI.postGood(good)
         return respond.status
     }

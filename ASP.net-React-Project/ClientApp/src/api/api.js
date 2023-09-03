@@ -36,7 +36,6 @@ export const goodsAPI = {
     },
 
     postGood(good) {
-        debugger
         return instance.post(`good/add?Name=${good.Name}&Price=${good.Price}`)
     },
 

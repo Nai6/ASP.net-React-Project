@@ -9,11 +9,11 @@ public partial class Good
 {
     public int Id { get; set; }
 
-    public string? Name { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
     public int? Price { get; set; }
 
     public byte[]? Img { get; set; }
 
-    public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
+    public int? Quantity { get; set; }
 }

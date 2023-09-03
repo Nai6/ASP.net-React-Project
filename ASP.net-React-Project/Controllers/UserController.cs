@@ -1,11 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
-using ASP.net_React_Project.Tools;
-using ASP.net_React_Project.Validators;
-using ASP.net_React_Project.Validators.Attributes.UserControllerValidation;
+using ASP.net_React_Project.Aggregators;
 
 namespace ASP.net_React_Project.Controllers
 {
@@ -13,7 +7,7 @@ namespace ASP.net_React_Project.Controllers
     [Route("api/user")]
     public class UserController : Controller
     {
-        private MarketPlace MapUsers = new();
+        private UserAggregator MapUsers = new();
 
         public UserController(MarketPlaceContext context)
         {
