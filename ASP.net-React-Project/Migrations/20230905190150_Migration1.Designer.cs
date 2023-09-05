@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASP.net_React_Project.Migrations
 {
     [DbContext(typeof(MarketPlaceContext))]
-    [Migration("20230903185216_Migration1")]
+    [Migration("20230905190150_Migration1")]
     partial class Migration1
     {
         /// <inheritdoc />
@@ -67,7 +67,9 @@ namespace ASP.net_React_Project.Migrations
 
                     b.HasIndex("CartId");
 
-                    b.ToTable("CartGood");
+                    b.HasIndex("GoodId");
+
+                    b.ToTable("CartGoods");
                 });
 
             modelBuilder.Entity("ASP.net_React_Project.Good", b =>
@@ -142,6 +144,14 @@ namespace ASP.net_React_Project.Migrations
                         .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("ASP.net_React_Project.Good", "Good")
+                        .WithMany()
+                        .HasForeignKey("GoodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Good");
                 });
 
             modelBuilder.Entity("ASP.net_React_Project.Cart", b =>

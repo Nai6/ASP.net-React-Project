@@ -5,7 +5,7 @@
 namespace ASP.net_React_Project.Migrations
 {
     /// <inheritdoc />
-    public partial class Migration1 : Migration
+    public partial class NewMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -61,7 +61,7 @@ namespace ASP.net_React_Project.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CartGood",
+                name: "CartGoods",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -72,19 +72,30 @@ namespace ASP.net_React_Project.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CartGood", x => x.Id);
+                    table.PrimaryKey("PK_CartGoods", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CartGood_Carts_CartId",
+                        name: "FK_CartGoods_Carts_CartId",
                         column: x => x.CartId,
                         principalTable: "Carts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CartGoods_Goods_GoodId",
+                        column: x => x.GoodId,
+                        principalTable: "Goods",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CartGood_CartId",
-                table: "CartGood",
+                name: "IX_CartGoods_CartId",
+                table: "CartGoods",
                 column: "CartId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartGoods_GoodId",
+                table: "CartGoods",
+                column: "GoodId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Carts_UserId",
@@ -98,13 +109,13 @@ namespace ASP.net_React_Project.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CartGood");
-
-            migrationBuilder.DropTable(
-                name: "Goods");
+                name: "CartGoods");
 
             migrationBuilder.DropTable(
                 name: "Carts");
+
+            migrationBuilder.DropTable(
+                name: "Goods");
 
             migrationBuilder.DropTable(
                 name: "Users");

@@ -18,9 +18,7 @@ namespace ASP.net_React_Project.Aggregators
         }
         public IActionResult GetUserAll()
         {
-            return new JsonResult(db.Set<User>()
-                .Include( u => u.Cart)
-                .ThenInclude( u => u.CartGoods));
+            return new JsonResult(db.Set<User>());
         }
 
         public IActionResult GetUserLogin(User loginData)
@@ -39,27 +37,33 @@ namespace ASP.net_React_Project.Aggregators
 
         public IActionResult GetUserById(int id)
         {
-            var userData = db.Set<User>().Where(u => u.Id == id).FirstOrDefault();
-            if (userData != null) return new JsonResult(userData);
+            User user = db.Set<User>().Include(u => u.Cart)
+                .ThenInclude(u => u.CartGoods)
+                .ThenInclude(u => u.Good) 
+                .Where(u => u.Id == id).FirstOrDefault();
+            if (user != null) return new JsonResult(user);
             else return new BadRequestObjectResult(new { message = $"User with ID {id} does not exist" });
         }
 
         public IActionResult GetUserByJWT(string authorization)
         {
             var userId = TokenInfoGetter.GetUserID(authorization);
-            var userData = db.Set<User>().Where(u => u.Id == userId).Select(u => new { u.Id, u.Name, u.Cart }).FirstOrDefault();
-            return new JsonResult(userData);
+            var  User = db.Set<User>().Include(u => u.Cart)
+                .ThenInclude(u => u.CartGoods)
+                .ThenInclude(u => u.Good).Where(u => u.Id == userId)
+                .Select(u => new { u.Id, u.Name, u.Cart }).FirstOrDefault();
+            return new JsonResult(User);
         }
 
         public IActionResult PostUserRegistration(User userData)
         {
             UserValidation.Validate(userData, new RegistrationValidationAttribute());
 
-            var userCheck = db.Set<User>().Where(u => u.Name == userData.Name).FirstOrDefault();
+            var user = db.Set<User>().Where(u => u.Name == userData.Name).FirstOrDefault();
             {
-                if (userCheck == null)
+                if (user == null)
                 {
-                    User newUser = new() { Name = userData.Name, Password = userData.Password, Cart = new Cart() };
+                    User newUser = new() { Name = userData.Name, Password = userData.Password };
                     db.Users.Add(newUser);
                     db.SaveChanges();
                     return new JsonResult(newUser);

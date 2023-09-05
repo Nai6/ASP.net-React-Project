@@ -21,6 +21,9 @@ public partial class MarketPlaceContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    public virtual DbSet<CartGood> CartGoods { get; set; }
+
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Data Source=DESKTOP-ND0GN5F; Initial Catalog=MarketPlace; Integrated Security=True; User Id=myUsername; Password=myPassword; TrustServerCertificate=True;");
 
