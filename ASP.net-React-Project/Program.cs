@@ -11,6 +11,8 @@ var services = builder.Services;
 services.AddDbContext<MarketPlaceContext>();
 services.AddControllers();
 services.AddCors();
+services.AddAuthorization();
+
 
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -33,7 +35,6 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
         };
     });
-services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -45,8 +46,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseRouting();
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action}/{id?}");

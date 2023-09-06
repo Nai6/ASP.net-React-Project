@@ -1,10 +1,12 @@
 ﻿using ASP.net_React_Project.Aggregators;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASP.net_React_Project.Controllers
 {
     [ApiController]
     [Route("api/cart")]
+    [Authorize(Roles = "user")]
     public class CartController : Controller
     {
         private CartAggregator MapCart = new();

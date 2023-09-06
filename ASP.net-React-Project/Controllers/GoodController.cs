@@ -6,6 +6,8 @@ namespace ASP.net_React_Project.Controllers
 {
     [ApiController]
     [Route("api/good")]
+    [Authorize(Roles = "user")]
+
     public class GoodController : Controller
     {
         GoodAggregator MapGood = new();
@@ -16,6 +18,7 @@ namespace ASP.net_React_Project.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("get")]
         public IActionResult Get()
         {

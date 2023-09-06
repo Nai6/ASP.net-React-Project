@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ASP.net_React_Project.Aggregators;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASP.net_React_Project.Controllers
 {
     [ApiController]
     [Route("api/user")]
+    [Authorize(Roles = "user")]
     public class UserController : Controller
     {
         private UserAggregator MapUsers = new();
@@ -22,6 +24,7 @@ namespace ASP.net_React_Project.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("login")]
         public IActionResult login([FromHeader] User loginData)
         {
@@ -43,6 +46,7 @@ namespace ASP.net_React_Project.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [Route("registration")]
         public IActionResult registration([FromHeader] User userData)
         {

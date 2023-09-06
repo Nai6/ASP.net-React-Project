@@ -39,7 +39,8 @@ namespace ASP.net_React_Project.Tools
                 {
                     var claims = new List<Claim>
                     {
-                        new Claim(ClaimsIdentity.DefaultNameClaimType, user.Id.ToString())
+                        new Claim(ClaimsIdentity.DefaultNameClaimType, user.Id.ToString()),
+                        new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role)
                     };
                     ClaimsIdentity claimsIdentity =
                     new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,

@@ -30,6 +30,8 @@ namespace ASP.net_React_Project.Aggregators
                 .Where(u => u.Name == loginData.Name && u.Password == userPassword)
                 .FirstOrDefault();
 
+            if(user is null) return new StatusCodeResult(401);
+
             var response = TokenGenerator.CreateJWTToken(db, user);
 
             return new JsonResult(response);
