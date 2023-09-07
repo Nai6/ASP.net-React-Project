@@ -1,10 +1,11 @@
 import React from "react";
 
 const CartComponent = (props) =>{
+    debugger
     return <ul>
-        <li>{props.cartData.id}</li>
-        <li>{props.cartData.userId}</li>
-        <li>{props.cartData.goodsId}</li>
+        <li>{props.good.name}</li>
+        <li>{props.good.price}</li>
+        <li>{props.quantity}</li>
     </ul>
 }
 

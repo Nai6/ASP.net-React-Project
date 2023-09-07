@@ -35,7 +35,13 @@ export const removeCartFromItem = createAsyncThunk(
 
 
 const initialState = {
-    userCart: null,
+    userCart: [
+        {
+            id: 1,
+            userId: 1,
+            cartGoods: []
+        }
+    ],
     allCarts: [],
     status: null,
     isFetching: true,
@@ -49,20 +55,20 @@ const cartSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getAllCarts.fulfilled, (state, actions) =>{
+            .addCase(getAllCarts.fulfilled, (state, actions) => {
                 state.allCarts.push(actions.payload)
             })
-            .addCase(getCartItem.pending, (state) =>{
+            .addCase(getCartItem.pending, (state) => {
                 state.isFetching = true
             })
-            .addCase(getCartItem.fulfilled, (state, actions) =>{
+            .addCase(getCartItem.fulfilled, (state, actions) => {
                 state.userCart = actions.payload
                 state.isFetching = false
             })
             .addCase(postCart.fulfilled, (state, actions) => {
                 state.status.push(actions.payload)
             })
-            .addCase(removeCartFromItem.fulfilled, (state, actions) =>{
+            .addCase(removeCartFromItem.fulfilled, (state, actions) => {
                 state.status.push(actions.payload)
             })
     }

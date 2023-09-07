@@ -1,27 +1,35 @@
-import React from "react";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import {  useDispatch, useSelector } from "react-redux";
 import CartComponent from "./CartComponent";
-import { userID } from "../../redux/authSlice";
-import { getCartItem } from "../../redux/cartSlice";
+import { getCartItem } from "../../redux/cartSlice"
 
 const CartPage = () => {
-    const dispatch = useDispatch()
-    const jwtToken = useSelector((state) => state.auth.jwtToken)
-    const cartData = useSelector((state) => state.cart.userCart)
+    debugger
+    const dispatch = useDispatch() 
+    const cartData = useSelector((state) => state.cart.userCart[0].cartGoods)
+    const isLogined = useSelector((state) => state.auth.isLogined)
     const isFetching = useSelector((state) => state.cart.isFetching)
+    const jwtToken = useSelector((state) => state.auth.jwtToken)
+
     useEffect(() => {
         dispatch(getCartItem(jwtToken))
-    }, [])
+    },[isLogined])
 
-    if (isFetching === true) return <div>Loading...</div>
-    return (
-        <div>
-            {cartData.map(c => <CartComponent
-                cartData={c}
-                key={c.id} />)}
-        </div>
-    )
+    if(isFetching) {
+        return <div>Loading...</div>
+    }
+
+    if (isLogined && cartData) {
+        debugger
+        return (
+            <div>
+                {cartData.map(c => <CartComponent
+                    good={c.good}
+                    key={c.id} />)}
+            </div>
+        )
+    }
+
 }
 
 export default CartPage

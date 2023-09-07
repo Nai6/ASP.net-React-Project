@@ -24,7 +24,11 @@ namespace ASP.net_React_Project.Aggregators
         public IActionResult GetCartItem(string authorization)
         {
             var userId = TokenInfoGetter.GetUserID(authorization);
-            List<Cart> cartItems = db.Set<Cart>().Where(u => u.UserId == userId).ToList();
+            List<Cart> cartItems = db.Set<Cart>()
+                .Include(c => c.CartGoods)
+                .ThenInclude(g => g.Good)
+                .Where(u => u.UserId == userId)
+                .ToList();
             return new JsonResult(cartItems);
         }
 

@@ -12,13 +12,6 @@ namespace ASP.net_React_Project.Tools
             return userId;
         }
 
-/*        public static string GetUserRole(string authToken)
-        {
-            var token = GetToken(authToken);
-            var role = token.Claims.FirstOrDefault(c => c.Type == ClaimsIdentity.DefaultRoleClaimType)?.Value;
-            return role;
-        }*/
-
         private static JwtSecurityToken GetToken(string authToken)
         {
             var handler = new JwtSecurityTokenHandler();

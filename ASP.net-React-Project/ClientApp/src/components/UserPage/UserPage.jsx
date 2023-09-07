@@ -1,18 +1,10 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { userID } from "../../redux/authSlice";
+import React from "react";
+import { useSelector } from "react-redux";
 
 const UserPage = () => {
-    const dispatch = useDispatch();
-    const JWTToken = useSelector((state) => state.auth.jwtToken)
+
     const userData = useSelector((state) => state.auth.userData)
-    const isFetching = useSelector((state) => state.auth.isFetching)
-    useEffect(() => {
-        dispatch(userID(JWTToken))
-    }, [dispatch, JWTToken])
     
-    if(isFetching === true) return <div>Loading...</div>
-    debugger
     return <div>
         <ul>
             <li>{userData.id}</li>
