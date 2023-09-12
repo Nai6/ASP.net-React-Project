@@ -9,10 +9,21 @@ export const authAPI = {
         return instance.get(`user/login?Name=${data.userName}&password=${data.password}`)
     },
     registration(data) {
-        return instance.post(`user/registration?Name=${data.userName}&Password=${data.password}`)
+        return instance.post(`user/registration`, {
+            headers:
+            {
+                'Name': data.userName,
+                'Password': data.password,
+                'City': data.city,
+                'Email': data.email,
+                'PhoneNumber': data.PhoneNumber,
+                'DateOfBirth': data.dateOfBirth,
+                'IsSeller': data.isSeller
+            }
+        })
     },
     getUserByJWT(data) {
-        return instance.get('user/jwt', {headers: {'authorization':data}})
+        return instance.get('user/jwt', { headers: { 'authorization': data } })
     }
 }
 
@@ -54,14 +65,14 @@ export const cartAPI = {
     },
 
     getCartItem(data) {
-        return instance.get('cart/items', {headers: {'authorization':data}})
+        return instance.get('cart/items', { headers: { 'authorization': data } })
     },
 
     postCart(data) {
-        return instance.post(`cart/add?UserId=${data.UserId}&GoodId=${data.GoodId}`, {headers: {'authorization':data}})
+        return instance.post(`cart/add?UserId=${data.UserId}&GoodId=${data.GoodId}`, { headers: { 'authorization': data } })
     },
 
     deleteItemFromCart(data) {
-        return instance.delete(`remove/${data.id}`, {headers: {'authorization':data}})
+        return instance.delete(`remove/${data.id}`, { headers: { 'authorization': data } })
     }
 }

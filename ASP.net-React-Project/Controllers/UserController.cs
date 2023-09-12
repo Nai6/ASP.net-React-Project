@@ -48,7 +48,7 @@ namespace ASP.net_React_Project.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("registration")]
-        public IActionResult registration([FromHeader] User userData)
+        public IActionResult registration([FromForm] User userData)
         {
             return MapUsers.PostUserRegistration(userData);
 

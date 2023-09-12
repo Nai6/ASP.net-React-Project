@@ -65,7 +65,8 @@ namespace ASP.net_React_Project.Aggregators
             {
                 if (user == null)
                 {
-                    User newUser = new() { Name = userData.Name, Password = userData.Password };
+                    Creation userCreation = new();
+                    User newUser = userCreation.CreateNewUser(userData);
                     db.Users.Add(newUser);
                     db.SaveChanges();
                     return new JsonResult(newUser);

@@ -24,7 +24,7 @@ const LoginForm = (props) => {
     })
     return (
         <form onSubmit={formik.handleSubmit}>
-            <div>Login Name</div>
+            <div>Login Name:</div>
             <input
                 id="userName"
                 name="userName"
@@ -32,7 +32,7 @@ const LoginForm = (props) => {
                 onChange={formik.handleChange}
                 value={formik.values.userName}
             />
-            <div>Password</div>
+            <div>Password:</div>
             <input
                 id='password'
                 name='password'
